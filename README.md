@@ -475,3 +475,324 @@ $= (2^5 \bmod 31)^6 \bmod 31$
 $= (32 \bmod 31) \bmod 31$
 
 $= 1$
+
+## 11. RSA Key Creation
+
+### Key Creation
+1. Select two large prime numbers x and y
+2. Calculate n = x * y
+3. Compute the totient function φ(n) = (x-1)(y-1)
+4. Select an integer e such that e is co-prime to φ(n) and 1 < e < φ(n)
+   - The pair of numbers (n, e) forms the public key
+   - Two integers are co-prime if they only positive integer that divides them is 1
+   - Cannot share any prime factors.
+5. Calculate d such that d * e ≡ 1 (mod φ(n))
+    - d can be found using the Extended Euclidean Algorithm.
+    - The pair of numbers (n, d) forms the private key.
+
+## 12. Totient Function and Co-prime
+
+**co-prime:**
+```text
+
+Example 6:
+
+6 has prime factors of 2 and 3
+
+Check from 1-n for prime factors of 6
+1 does NOT have factors of 2 or 3.
+2 HAS factors of 2.
+3 HAS factors of 3.
+4 HAS factors of 2.
+5 does NOT have factors of 2 or 3.
+6 HAS factors of 2 and 3.
+
+2 integers without factors of 2 or 3.
+So 1 and 5 are co-prime to 6
+```
+$\varphi(6) = 2$ ***There are 2 co-prime integers in 6***
+$\varphi(n)$ where $n$ is a prime number, is always $n - 1$.
+$\varphi(5) = 4$
+
+**prime $\cdot$ itself **
+$5 \cdot 5 = 25$
+$\varphi(25)$
+
+$\begin{aligned}
+&1 &&2 &&3 &&4 &&5 \cr
+&6 &&7 &&8 &&9 &&10 \cr
+&11 &&12 &&13 &&14 &&15 \cr
+&16 &&17 &&18 &&19 &&20 \cr
+&21 &&22 &&23 &&24 &&25 \cr
+\end{aligned}$
+
+***Remove prime and multiples of prime***
+
+$\begin{aligned}
+&1 &&2 &&3 &&4 \cr
+&6 &&7 &&8 &&9 \cr
+&11 &&12 &&13 &&14 \cr
+&16 &&17 &&18 &&19 \cr
+&21 &&22 &&23 &&24 \cr
+\end{aligned}$
+
+$\begin{aligned}
+&1 &&2 &&3 &&4 &&(p - 1)\cr
+&6 &&7 &&8 &&9 &&p(p - 1)\cr
+&11 &&12 &&13 &&14 &&p^2(p - 1) \cr
+&16 &&17 &&18 &&19 &&p^3(p - 1) \cr
+&21 &&22 &&23 &&24 &&p^4(p - 1) \cr
+\end{aligned}$
+
+---
+
+***For different prime numbers:***
+$\varphi(pq) = (p - 1)(q - 1)$
+$\varphi(pqr) = (p - 1)(q - 1)(r - 1)$ ...etc
+$\equiv p^{a-1}(p - 1)$
+$\equiv p^{a-1}(p - 1)$
+$\therefore &nbsp; \varphi(p^a) = p^{a-1}(p - 1)$
+
+- **ALL PRIMES MUST BE DISTINCT FOR THIS ALGORITHM**
+
+---
+
+***For a mix of prime numbers:***
+$\varphi(60)$
+Prime factors $= 2 * 2 * 3 * 5$
+
+Set aside the second 2:
+$\varphi(60) = (2 - 1)(3 - 1)(5 - 1) = 8$
+
+Now multiply that result by the 2 set aside:
+$\varphi(60) = 2 * 8 = 16$
+
+$\varphi(n) = n\left(\frac{p_1 - 1}{p_1}\right)\left(\frac{p_2 - 1}{p_2}\right)\cdots\left(\frac{p_z - 1}{p_z}\right)$
+$\equiv\varphi(n) = n\left(1 - \frac{1}{p_1}\right)\left(1 - \frac{1}{p_2}\right)\cdots\left(1 - \frac{1}{p_z}\right)$
+$\equiv\varphi(n) = p_1^{k_1 - 1}(p_1 - 1) \cdot p_2^{k_2 - 1}(p_2 - 1) \cdots p_z^{k_z - 1}(p_z - 1)$
+where $n = p_1^{k_1}p_2^{k_2}\cdots p_z^{k_z}$ and $p_1, p_2, \ldots, p_z$ are distinct primes and the exponents $k1, k2$ and so on are their exponents..
+
+$\equiv$ "How many integers between 1 and n are co-prime to n?"
+
+## 13. Number Theory Foundations
+
+### The Fundamental Theorem of Arithmatic
+
+***Every integer greater than 1 can be uniquely expressed as a product of prime numbers.***
+
+- Examples:
+  - 100 = $2^2 \cdot 5^2$ or $(2 \cdot 2 \cdot 5 \cdot 5)$
+  - 641 = 641 (it is prime)
+  - 999 = $3^3 \cdot 37$
+  - 1024 = $2^{10}$
+
+### Trial Division
+- If $n$ is prime, then $n$ thas a prime divisor less than or equal to $\sqrt{n}$.
+- Proof:
+  - If $n$ is composite, by definition of a composite number, we know that it has a factor $a$ with $1 \lt a \lt n$
+    - By definition of a factor of a positive integer, $n = ab$ where $b$ is a positive integer and greater than 1.
+    - $(a \leq \sqrt{n}) \lor (b \leq \sqrt{n})$
+      - if $(a \geq \sqrt{n}) \land (b \leq \sqrt{n})$ then $a \cdot b \gt (\sqrt{n} \cdot \sqrt{n}) = n$
+        - so $(a \lor b) \leq \sqrt{n}$
+- Show that 101 is prime:
+  - $\sqrt{101} \approx 10$
+    - Only primes not exceeding 10 are 2, 3, 5, 7.
+    - 101 is not evenly divisible by any of these primes.
+  - Every integer has a prime factorization. If $n$ is not divisible by any primes $\le \sqrt{n}$, then $n$ is prime.
+- Find Prime factorization of 7007:
+  - 2 does not divide 7007.
+  - 3 does not divide 7007.
+  - 5 does not divide 7007.
+  - 7 DOES divide 7007. 7007/7 = 1001
+    - Now try to divide 1001 by 7.
+      - 1001/7 = 143
+      - Now try to divide 143 by 7.
+        - It does not divide 143 evenly. So try next prime.
+        - 143/11 = 13
+        - 13 is prime so 13 is the final prime factor of 7007.
+          - 7007 = $7 \cdot 7 \cdot 11 \cdot 13$ or $7^2 \cdot 11 \cdot 13$
+
+### The Sieve of Eratosthenes
+- Find all primes less than $n$
+- $n = 100$
+  - Remove all multiples of 2 except 2
+  - Remove all multiples of 3 except 3
+  - Remove all multiples of 5 except 5
+  - Remove all multiples of 7 except 7
+  - Since all composite ints between 0 and 100 are divisble by a prime less than or equal to $\sqrt{100} = 10$
+    - anything remaining is prime
+
+### Pairwise Relatively Prime
+- Two integers are relatively prime if they have no common factors other than 1.
+- 17 and 22 are relatively prime because their only common factor is 1.
+  - 22 is not prime but 17 and 22 are relatively prime because their only common factor is 1.
+
+### Greatest Common Divisor
+- Using Prime Factorization:
+  - $a = p_1^{ai} p_2^{a2}... p_n^{a_n} $  $b = p_1^{bi} p_2^{b2}... p_n^{b_n} $
+    - Where each exponent is a non-negative integer, and where all primes occurring in the prime factorization of
+    either $a$ or $b$ are included in both factorizations, with zero exponents if necessary.
+      - Then gcd$(a,b) = p_1^{min(ai,bi)} p_2^{min(a2,b2)}... p_n^{min(a_n,b_n)}$
+      - Example: $gcd(120, 500) =
+        - 120 factorization: $2^3 \cdot 3^1 \cdot 5^1$
+        - 500 factorization: $2^2 \cdot 5^3$
+        - $2^{min(3,2)} \cdot 3^{min(0,1)} \cdot 5^{min(1,2)} = 2^2 \cdot 5^1 = 20$
+
+### Least Common Multiple
+- Using Prime Factorization:
+  - $lcm(a,b) = p_1^{max (a1, b1)} p_2^{max(a2,b2)}... p_n^{max(a_n,b_n)}$
+  - Example: $lcm(2^33^57^2, 2^43^3) = 2^{max(3,4)} \cdot 3^{max(5,3)} \cdot 7^{max(2,0)} = 2^4 \cdot 3^5 \cdot 7^2 =  190512$
+
+### The Euclidean Algorithm
+- An efficient way to find the greatest common divisor of two integers.
+- $gcd(287, 91)$
+  - First divide 287 by 91 to get a quotient of 3 and a remainder of 14.
+    - Any divisor of 287 and 91 must also be a divisor of $91 \cdot 3 + 14$
+      - Hence the gcd of 287 and 91 is the same as the gcd of 91 and 14.
+      - Repeat the above process:
+        - $91 = 14 \cdot 6 + 7$
+        - Because and common divisor of 91 and 14 must also be a divisor of 7.
+        - $gcd(14,7) = 7$
+        - Hence $gcd(287,91) = 7$
+```c++
+int euclidean(int a, int b) {
+    x = a;
+    y = b;
+
+    while (y != 0) {
+        r = x % y;
+        x = y;
+        y = r;
+    }
+    return x;
+}
+
+```
+
+## 14. Modular Exponentiation
+
+### Square and Mod Chart
+$O(n)$
+$5\mod 17 = 5$
+
+$\begin{aligned}
+5^0\mod 17 = 1 &emsp; &\cr
+5^1\mod 17 = 5 &emsp; &\cr
+5^2\mod 17 = 8 &emsp; &\equiv (5^1\mod 17) \cdot (5^1\mod 17) \cr
+&emsp; &\equiv (5 \cdot 5 \mod 17) \equiv 25 \mod 17 = 8 \cr
+5^3\mod 17 = 6 &emsp; &\equiv (5^2\mod 17) \cdot (5^1\mod 17) \cr
+&emsp; &\equiv (8 \cdot 5 \mod 17) \equiv 40 \mod 17 = 6 \cr
+5^4\mod 17 = 13 &emsp; &\equiv (5^2\mod 17) \cdot (5^2\mod 17) \cr
+&emsp; &\equiv (8 \cdot 8 \mod 17) \equiv 64 \mod 17 = 13 \cr
+5^5\mod 17 = 14 &emsp; &\equiv (5^4\mod 17) \cdot (5^1\mod 17) \cr
+&emsp; &\equiv (13 \cdot 5 \mod 17) \equiv 65 \mod 17 = 14 \cr
+5^6\mod 17 = 2 &emsp; &\equiv (5^4\mod 17) \cdot (5^2\mod 17) \cr
+&emsp; &\equiv (13 \cdot 8 \mod 17) \equiv 104 \mod 17 = 2 \cr
+5^7\mod 17 = 10 &emsp; &\equiv (5^4\mod 17) \cdot (5^3\mod 17) \cr
+&emsp; &\equiv (13 \cdot 6 \mod 17) \equiv 78 \mod 17 = 10 \cr
+5^8\mod 17 = 16 &emsp; &\equiv (5^4\mod 17) \cdot (5^4\mod 17) \cr
+&emsp; &\equiv (13 \cdot 13 \mod 17) = 169 \mod 17 = 16 \cr
+5^9\mod 17 = 12 &emsp; &\equiv (5^8\mod 17) \cdot (5^1\mod 17) \cr
+&emsp; &\equiv (16 \cdot 5 \mod 17) \equiv 80 \mod 17 = 12 \cr
+5^{10}\mod 17 = 9 &emsp; &\equiv (5^8\mod 17) \cdot (5^2\mod 17) \cr
+&emsp; &\equiv (16 \cdot 8 \mod 17) \equiv 128 \mod 17 = 9 \cr
+5^{11}\mod 17 = 11 &emsp; &\equiv (5^8\mod 17) \cdot (5^3\mod 17) \cr
+&emsp; &\equiv (16 \cdot 6 \mod 17) \equiv 96 \mod 17 = 11 \cr
+5^{12}\mod 17 = 4 &emsp; &\equiv (5^8\mod 17) \cdot (5^4\mod 17) \cr
+&emsp; &\equiv (16 \cdot 13 \mod 17) \equiv 208 \mod 17 = 4 \cr
+5^{13}\mod 17 = 3 &emsp; &\equiv (5^8\mod 17) \cdot (5^5\mod 17) \cr
+&emsp; &\equiv (16 \cdot 14 \mod 17) \equiv 224 \mod 17 = 3 \cr
+5^{14}\mod 17 = 15 &emsp; &\equiv (5^8\mod 17) \cdot (5^6\mod 17) \cr
+&emsp; &\equiv (16 \cdot 2 \mod 17) \equiv 32 \mod 17 = 15 \cr
+5^{15}\mod 17 = 7 &emsp; &\equiv (5^8\mod 17) \cdot (5^7\mod 17) \cr
+&emsp; &\equiv (16 \cdot 10 \mod 17) \equiv 160 \mod 17 = 7 \cr
+\end{aligned}$
+&nbsp;
+
+```text
+All base2 cases divisible by 16 after this point will equal 1
+```
+ ---
+$5^{16}\mod 17 = 1 \equiv (5^8\mod 17) &nbsp; \cdot &nbsp; (5^8\mod 17)$
+$(16 \cdot 16 \mod 17) = 256 \mod 17 = 1$
+$(17 \cdot 15 = 255 + 1 = 256)$
+
+$5^{32}\mod 17 = 1$
+$5^{n\mod 16 &nbsp; = &nbsp; 0}\mod 17 \equiv 5^{16} \equiv 1$
+
+---
+### Congruencies
+- Things that are equal when they share the same remainder when divided by k
+- Theorem: if $a \equiv b\mod k \to a-b$ is divisible by k
+
+
+$a \equiv b\mod k$
+($\to$) $a\mod k \equiv b\mod k$
+$ a = 22 \mod 17 = 5 &nbsp; &nbsp;\equiv &nbsp; b = 15\mod 17 \equiv 1$
+
+$(12 \equiv 19) \mod 7$
+
+---
+### Notation
+- Modulo operations are a function. Takes and int and returns an int
+- Congruences are a relation. Like a boolean (true of false/yes or no)
+
+---
+### Arithmetic
+$(a+b)\mod k = ((a\mod k) &nbsp;+&nbsp; (b\mod k))\mod k$
+$a+b \equiv (a\mod k) + (b\mod k)$
+
+---
+
+$(a \cdot b)\mod k \equiv ((a\mod k) &nbsp; \cdot (b\mod k))\mod k$
+$2^{20}\mod 5 \equiv ((2^{10} \mod 5)&nbsp; \cdot (2^{10} \mod 5))\mod 5$
+$((1024\mod 5) \cdot (1024\mod 5)) \mod 5$
+$4 \cdot 4 \mod 5 = 16 \mod 5 = 1$
+$2^{50}\mod 5 \equiv ((2^{10} \mod 5) &nbsp; (2^{10} \mod 5) &nbsp; (2^{10} \mod 5) &nbsp; (2^{10} \mod 5) &nbsp;(2^{10} \mod 5)) \mod 5$
+$((1024\mod 5) \cdot (1024\mod 5)\cdot(1024\mod 5) \cdot (1024\mod 5)\cdot(1024\mod 5))\mod 5$
+$(4 \cdot 4 \cdot 4 \cdot 4 \cdot 4) \mod 5$
+$((16\mod 5) \cdot (16\mod 5) \cdot 4)\mod 5$
+$((1 \cdot 1 \cdot 1 \cdot 1) \cdot 4)) \mod 5 = 4$
+
+## 15. Square-and-Mod Chart
+
+Square-and-Mod Chart for a = 4 and b = 19
+
+$$
+\begin{array}{c|l|c}
+\text{Power} & \text{Calculation} & \text{Remainder mod }19\\
+\hline
+4^1 & 4 & 4\\
+4^2 & 4\cdot4=16 & 16\\
+4^4 & (4^2)^2\equiv16^2=256=19\cdot13+9 & 9\\
+4^8 & (4^4)^2\equiv9^2=81=19\cdot4+5 & 5\\
+4^{16} & (4^8)^2\equiv5^2=25=19\cdot1+6 & 6\\
+4^{32} & (4^{16})^2\equiv6^2=36=19\cdot1+17 & 17\\
+4^{64} & (4^{32})^2\equiv17^2=289=19\cdot15+4 & 4\\
+4^{128} & (4^{64})^2\equiv4^2=16 & 16\\
+4^{256} & (4^{128})^2\equiv16^2=256=19\cdot13+9 & 9
+\end{array}
+$$
+
+To find 4^321 mod 19, first write:
+
+$$
+321=256+64+1
+$$
+
+Then use the corresponding values from the chart:
+
+$$
+\begin{aligned}
+4^{321}
+&=4^{256+64+1}\\
+&\equiv4^{256}\cdot4^{64}\cdot4^1 \pmod{19}\\
+&\equiv9\cdot4\cdot4\\
+&=144\\
+&=19\cdot7+11.
+\end{aligned}
+$$
+
+$$
+\boxed{4^{321}\equiv11\pmod{19}}
+$$
